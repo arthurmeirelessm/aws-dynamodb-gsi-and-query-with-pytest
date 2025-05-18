@@ -10,14 +10,11 @@ infrastructure/.terraform/
 
 infrastructure/modules/*.zip
 
-# Ignorar tudo dentro de src/
 src/*
 
-# Exceto a pasta tests e todo conteúdo dela
 !src/tests/
 !src/tests/**
 
-# Exceto arquivos .py, .json e .txt em qualquer subpasta dentro de src/
 !src/**/*.py
 !src/**/*.json
 !src/**/*.txt
