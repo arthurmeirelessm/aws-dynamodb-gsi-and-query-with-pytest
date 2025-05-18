@@ -1,0 +1,21 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  ModuleInfrastructureAwsLambdaFunctionThisFFC27085:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: GSItesting
+      Architectures:
+      - x86_64
+      Code: /home/arthurmeirelessm/dynamodb-central-sdk/infrastructure/modules/lambda_payload.zip
+      Handler: lambda_function.lambda_handler
+      PackageType: Zip
+      Runtime: python3.11
+      Layers: []
+      Timeout: 180
+      MemorySize: 128
+    Metadata:
+      SamResourceId: module.infrastructure.aws_lambda_function.this
+      SkipBuild: true
+Metadata:
+  AWS::SAM::Hook:
+    HookName: terraform
