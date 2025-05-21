@@ -1,3 +1,4 @@
 {
-    "operation": "gsi_query"
+    "operation": "gsi_query",
+    "category_to_query": "book"
 }

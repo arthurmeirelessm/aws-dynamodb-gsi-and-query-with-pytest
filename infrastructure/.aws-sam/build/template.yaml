@@ -4,13 +4,10 @@ Resources:
     Type: AWS::Lambda::Function
     Properties:
       FunctionName: GSItesting
-      Architectures:
-      - x86_64
-      Code: /home/arthurmeirelessm/dynamodb-central-sdk/infrastructure/modules/lambda_payload.zip
+      Code: /home/arthurmeirelessm/aws-dynamodb-gsi-and-query-with-pytest/aws-dynamodb-gsi-and-query-with-pytest/infrastructure/modules/lambda_payload.zip
       Handler: lambda_function.lambda_handler
       PackageType: Zip
       Runtime: python3.11
-      Layers: []
       Timeout: 180
       MemorySize: 128
     Metadata:
