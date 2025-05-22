@@ -1,0 +1,31 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.11
+    commands:
+      - echo "Instalando dependências..."
+      - pip install --upgrade pip
+      - pip install -r requirements.txt
+      - pip install pytest pytest-cov
+  pre_build:
+    commands:
+      - echo "Rodando testes unitários com coverage..."
+      - pytest --cov=src --cov-report=term-missing --cov-fail-under=90 src/tests/
+      - echo "Logando no ECR..."
+      - REPOSITORY_URI=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPOSITORY_NAME}
+      - aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${REPOSITORY_URI}
+  build:
+    commands:
+      - echo "Construindo a imagem Docker..."
+      - IMAGE_TAG=${CODEBUILD_RESOLVED_SOURCE_VERSION}
+      - docker build -t ${REPOSITORY_URI}:${IMAGE_TAG} .
+  post_build:
+    commands:
+      - echo "Fazendo push da imagem no ECR..."
+      - docker push ${REPOSITORY_URI}:${IMAGE_TAG}
+      - echo "Atualizando Lambda com a nova imagem..."
+      - aws lambda update-function-code --function-name ${LAMBDA_FUNCTION_NAME} --image-uri ${REPOSITORY_URI}:${IMAGE_TAG}
+artifacts:
+  files: []

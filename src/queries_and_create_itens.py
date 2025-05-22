@@ -1,19 +1,28 @@
 import json
 import aioboto3
 import uuid
+import os
 from datetime import datetime, timedelta, timezone
 import random
+from dotenv import load_dotenv
 from boto3.dynamodb.conditions import Key
+
+
+load_dotenv()
 
 class QueriesAndCreateItens:
     def __init__(self):
         self.session = aioboto3.Session()
-        self.table_name = "GSI-dynamodb-table-testing"
+        self.region = os.getenv("AWS_DEFAULT_REGION")
+        self.table_name = os.getenv("TABLE_NAME")
+        self.aws_access_key_id = os.getenv("AWS_ACCESS_KEY_ID")
+        self.aws_secret_access_key = os.getenv("AWS_SECRET_ACCESS_KEY")
         self.CATEGORIES = ["books", "electronics", "fashion", "games"]
 
     
     
     async def create_multiple_items_with_random_ids(self, count: int):
+        print(count)
         try:
             if not isinstance(count, int):
                 return {
@@ -22,7 +31,12 @@ class QueriesAndCreateItens:
                         "message": "Valor de count não é inteiro",
                     })
                 }
-            async with self.session.resource("dynamodb") as dynamodb:
+            async with self.session.resource(
+                "dynamodb",
+                region_name=self.region,
+                aws_access_key_id=self.aws_access_key_id,
+                aws_secret_access_key=self.aws_secret_access_key,
+            ) as dynamodb:
                 table = await dynamodb.Table(self.table_name)
                 fixed_ids = [f"item-{i}" for i in range(1, 6)]
 
