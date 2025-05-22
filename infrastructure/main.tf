@@ -7,8 +7,8 @@ module "infrastructure" {
 
   lambda_function_name = "GSItesting"
   dynamodb_table_name  = "GSI-dynamodb-table-testing"
-  project_name         = var.project_name
-  codebuild_role_arn   = var.codebuild_role_arn
+  project_name         = "GSItesting-project"
+  codebuild_role_arn   = ""
   ecr_repo_uri         = var.ecr_repo_uri
   buildspec_path       = var.buildspec_path
   tags                 = var.tags
@@ -17,7 +17,7 @@ module "infrastructure" {
   artifact_bucket_name = var.artifact_bucket_name
   codestar_connection_arn = var.codestar_connection_arn
   repo_owner           = var.repo_owner
-  repo_name            = var.repo_name
-  branch               = var.branch
+  repo_name            = ""
+  branch               = "main"
 }
 
